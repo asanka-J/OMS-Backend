@@ -12,6 +12,7 @@ from django.contrib.auth.models import (
     Permission,
     PermissionsMixin,
 )
+from django.forms.models import model_to_dict
 
 
 from .validators import validate_possible_number
@@ -49,14 +50,14 @@ class AddressQueryset(models.QuerySet):
 class Address(models.Model):
     first_name = models.CharField(max_length=256, blank=True)
     last_name = models.CharField(max_length=256, blank=True)
-    company_name = models.CharField(max_length=256, blank=True)
+    # company_name = models.CharField(max_length=256, blank=True)
     street_address_1 = models.CharField(max_length=256, blank=True)
     street_address_2 = models.CharField(max_length=256, blank=True)
     city = models.CharField(max_length=256, blank=True)
     city_area = models.CharField(max_length=128, blank=True)
     postal_code = models.CharField(max_length=20, blank=True)
     country = CountryField()
-    country_area = models.CharField(max_length=128, blank=True)
+    # country_area = models.CharField(max_length=128, blank=True)
     phone = PossiblePhoneNumberField(blank=True, default="")
 
     objects = AddressQueryset.as_manager()
@@ -68,10 +69,10 @@ class Address(models.Model):
     def full_name(self):
         return "%s %s" % (self.first_name, self.last_name)
 
-    def __str__(self):
-        if self.company_name:
-            return "%s - %s" % (self.company_name, self.full_name)
-        return self.full_name
+    # def __str__(self):
+    #     if self.company_name:
+    #         return "%s - %s" % (self.company_name, self.full_name)
+    #     return self.full_name
 
     def __eq__(self, other):
         if not isinstance(other, Address):
