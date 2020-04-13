@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/asanka/Desktop/projects/Products/projects/graphql-python/venvlinux/bin/python",
+    "python.pythonPath": "/home/asanka/Desktop/projects/Products/OMS-Backend/venv/bin/python",
     "python.linting.pylintEnabled": true,
     "python.linting.pycodestyleEnabled": false,
     "python.linting.enabled": true

@@ -1,7 +1,6 @@
 from django.db import models
 # from ordermanagement.catalogue.models import product
 from django.utils import timezone
-from django_countries.fields import Country, CountryField
 from oauthlib.common import generate_token
 from phonenumber_field.modelfields import PhoneNumber, PhoneNumberField
 from versatileimagefield.fields import VersatileImageField
@@ -16,7 +15,7 @@ from django.forms.models import model_to_dict
 
 
 from .validators import validate_possible_number
-from .manager import UserManager
+from .manager import UserManager, AddressQueryset
 from ..core.permissions import AccountPermissions, BasePermissionEnum
 
 class PossiblePhoneNumberField(PhoneNumberField):
@@ -25,39 +24,14 @@ class PossiblePhoneNumberField(PhoneNumberField):
     default_validators = [validate_possible_number]
 
 
-
-class AddressQueryset(models.QuerySet):
-    def annotate_default(self, user):
-        # Set default shipping/billing address pk to None
-        # if default shipping/billing address doesn't exist
-        default_shipping_address_pk, default_billing_address_pk = None, None
-        if user.default_shipping_address:
-            default_shipping_address_pk = user.default_shipping_address.pk
-        if user.default_billing_address:
-            default_billing_address_pk = user.default_billing_address.pk
-
-        return user.addresses.annotate(
-            user_default_shipping_address_pk=Value(
-                default_shipping_address_pk, models.IntegerField()
-            ),
-            user_default_billing_address_pk=Value(
-                default_billing_address_pk, models.IntegerField()
-            ),
-        )
-
-
-
 class Address(models.Model):
     first_name = models.CharField(max_length=256, blank=True)
     last_name = models.CharField(max_length=256, blank=True)
-    # company_name = models.CharField(max_length=256, blank=True)
     street_address_1 = models.CharField(max_length=256, blank=True)
     street_address_2 = models.CharField(max_length=256, blank=True)
     city = models.CharField(max_length=256, blank=True)
     city_area = models.CharField(max_length=128, blank=True)
     postal_code = models.CharField(max_length=20, blank=True)
-    country = CountryField()
-    # country_area = models.CharField(max_length=128, blank=True)
     phone = PossiblePhoneNumberField(blank=True, default="")
 
     objects = AddressQueryset.as_manager()
@@ -68,11 +42,6 @@ class Address(models.Model):
     @property
     def full_name(self):
         return "%s %s" % (self.first_name, self.last_name)
-
-    # def __str__(self):
-    #     if self.company_name:
-    #         return "%s - %s" % (self.company_name, self.full_name)
-    #     return self.full_name
 
     def __eq__(self, other):
         if not isinstance(other, Address):
@@ -87,8 +56,6 @@ class Address(models.Model):
         Result does not contain the primary key or an associated user.
         """
         data = model_to_dict(self, exclude=["id", "user"])
-        if isinstance(data["country"], Country):
-            data["country"] = data["country"].code
         if isinstance(data["phone"], PhoneNumber):
             data["phone"] = data["phone"].as_e164
         return data
@@ -108,6 +75,7 @@ class User(AbstractBaseUser,PermissionsMixin):
         Address, blank=True, related_name="user_addresses"
     )
     is_staff = models.BooleanField(default=False)
+    is_vendor = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     note = models.TextField(null=True, blank=True)
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
@@ -142,13 +110,10 @@ class User(AbstractBaseUser,PermissionsMixin):
     def get_short_name(self):
         return self.email
 
-    def has_perm(self, perm: BasePermissionEnum, obj=None):  # type: ignore
-        # This method is overridden to accept perm as BasePermissionEnum
-        return super().has_perm(perm.value, obj)
-
-
-    
+    # def has_perm(self, perm: BasePermissionEnum, obj=None):  # type: ignore
+    #     # This method is overridden to accept perm as BasePermissionEnum
+    #     return super().has_perm(perm.value, obj)
 
     def __str__(self):
-        return self.name
+        return self.email
 

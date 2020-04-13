@@ -30,7 +30,6 @@ INSTALLED_APPS = [
 
     "versatileimagefield",
     "phonenumber_field",
-    "django_countries",
     "graphene_django",
 ]
 
