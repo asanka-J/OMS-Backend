@@ -21,10 +21,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ordermanagement.order',
-    'ordermanagement.product',
-    'ordermanagement.shipping',
-    'ordermanagement.accounts',
+    'src.order',
+    'src.product',
+    'src.cart',
+    'src.accounts',
 
 
 
@@ -43,12 +43,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ordermanagement.urls'
+ROOT_URLCONF = 'src.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'src/templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -61,7 +63,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ordermanagement.wsgi.application'
+WSGI_APPLICATION = 'src.wsgi.application'
 
 
 # Database
@@ -113,9 +115,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static_dev"),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "static_cdn", "media_root")
 
 GRAPHENE = {
-    'SCHEMA': 'ordermanagement.graphql.schema.schema',
+    'SCHEMA': 'src.graphql.schema.schema',
     'MIDDLEWARE': [
             'graphql_jwt.middleware.JSONWebTokenMiddleware',
         ],
