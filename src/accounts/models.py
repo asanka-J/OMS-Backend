@@ -1,5 +1,5 @@
 from django.db import models
-# from ordermanagement.catalogue.models import product
+# from src.catalogue.models import product
 from django.utils import timezone
 from oauthlib.common import generate_token
 from phonenumber_field.modelfields import PhoneNumber, PhoneNumberField

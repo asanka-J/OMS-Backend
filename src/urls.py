@@ -3,7 +3,7 @@ from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.conf.urls.static import static
-from ordermanagement.accounts.views import index
+from src.accounts.views import index
 
 from graphene_django.views import GraphQLView
 

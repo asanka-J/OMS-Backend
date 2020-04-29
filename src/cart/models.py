@@ -1,6 +1,6 @@
 from django.db import models
-from ordermanagement.accounts.models import User
-from ordermanagement.product.models import Product
+from src.accounts.models import User
+from src.product.models import Product
 
 class Cart(models.Model):
     user        = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)

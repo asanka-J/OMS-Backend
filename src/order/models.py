@@ -1,7 +1,7 @@
 from django.db import models
-from ordermanagement.product.models import Product
-from ordermanagement.accounts.models import User,Address
-from ordermanagement.cart.models import Cart
+from src.product.models import Product
+from src.accounts.models import User,Address
+from src.cart.models import Cart
 
 
 class Order(models.Model):
