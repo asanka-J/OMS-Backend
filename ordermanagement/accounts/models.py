@@ -23,6 +23,10 @@ class PossiblePhoneNumberField(PhoneNumberField):
 
     default_validators = [validate_possible_number]
 
+ADDRESS_TYPES = (
+    ('billing', 'Billing address'),
+    ('shipping', 'Shipping address'),
+)
 
 class Address(models.Model):
     first_name = models.CharField(max_length=256, blank=True)
@@ -33,6 +37,8 @@ class Address(models.Model):
     city_area = models.CharField(max_length=128, blank=True)
     postal_code = models.CharField(max_length=20, blank=True)
     phone = PossiblePhoneNumberField(blank=True, default="")
+    address_type = models.CharField(max_length=120, choices=ADDRESS_TYPES)
+
 
     objects = AddressQueryset.as_manager()
 
@@ -64,6 +70,8 @@ class Address(models.Model):
         """Return a new instance of the same address."""
         return Address.objects.create(**self.as_data())
 
+    def __str__(self):
+        return self.full_name
 
 
 
