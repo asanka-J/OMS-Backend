@@ -49,7 +49,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            'ordermanagement/templates',
+            'src/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
