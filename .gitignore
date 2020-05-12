@@ -106,4 +106,4 @@ venv.bak/
 # frontend templates
 templates/
 static_dev/
-
+frontend/

@@ -48,7 +48,13 @@ class Address(models.Model):
     @property
     def full_name(self):
         return "%s %s" % (self.first_name, self.last_name)
-
+    
+    @full_name.setter
+    def full_name(self,name):
+        firstname ,lastname = name.spilt(' ')
+        self.first_name = firstname
+        self.last_name = lastname
+        
     def __eq__(self, other):
         if not isinstance(other, Address):
             return False

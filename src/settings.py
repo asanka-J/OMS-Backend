@@ -21,16 +21,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'src.order',
-    'src.product',
-    'src.cart',
-    'src.accounts',
+    'src.order.apps.OrderConfig',
+    'src.product.apps.CatalogueConfig',
+    'src.cart.apps.CartConfig',
+    'src.accounts.apps.AccountsConfig',
+    'src.shipping.apps.ShippingConfig',
+    'src.dashboard.apps.DashboardConfig',
 
 
 
-    "versatileimagefield",
-    "phonenumber_field",
-    "graphene_django",
+    'versatileimagefield',
+    'phonenumber_field',
+    'graphene_django',
+    'corsheaders'
+    
 ]
 
 MIDDLEWARE = [

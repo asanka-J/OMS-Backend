@@ -2,10 +2,12 @@ from django.db import models
 from versatileimagefield.fields import VersatileImageField
 from django.utils.translation import gettext as _
 from .managers import ParentCategoryManager
+from django.db.models.signals import pre_save
+from .signals import slug_generator
 
 class Category(models.Model):
     name = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(blank=True)
     description = models.TextField(blank=True)
     background_image = VersatileImageField(upload_to="category-backgrounds", blank=True, null=True)
     background_image_alt = models.CharField(max_length=128, blank=True)
@@ -21,10 +23,9 @@ class Category(models.Model):
         return self.name
 
 
-
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255)
     sku =  models.CharField(max_length=55, blank=True, null=True)
     category = models.ManyToManyField(Category)
     brand = models.TextField(blank=True)
@@ -50,3 +51,7 @@ class Product_Images(models.Model):
 
     def __str__(self):
          return self.product.name
+
+
+pre_save.connect(slug_generator, sender=Category)
+pre_save.connect(slug_generator, sender=Product)

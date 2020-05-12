@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class CatalogueConfig(AppConfig):
-    name = 'product'
+    name = 'src.product'
