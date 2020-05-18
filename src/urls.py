@@ -19,6 +19,10 @@ urlpatterns = [
     path('',index, name='home-page'),
     path('dashboard/', include('src.dashboard.urls')),
     path('category/', include('src.product.urls') ),
+    path('cart/', include('src.cart.urls') ),
+
+
+
     path('test/',test, name='test-page'),
     path('404/',not_available, name='404-page'),
     path('about/',about, name='about-page'),

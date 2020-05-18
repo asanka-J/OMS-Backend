@@ -12,6 +12,7 @@ class Order(models.Model):
     billing_address     = models.ForeignKey(Address, related_name="billing_address", null=True, blank=True,on_delete=models.SET_NULL)
     shipping_cost = models.IntegerField(blank=True, null=True, default=0)
     transaction_id = models.CharField(max_length=256, blank=True)
+    complete = models.BooleanField(default=False)
    
     def __str__(self): 
         return self.customer.name
@@ -26,5 +27,10 @@ class OrderItem(models.Model):
     
     def __str__(self): 
         return self.Product.name
+
+    @property
+    def get_total(self):
+        total = self.product.price * self.quantity
+        return total
 
 
