@@ -19,7 +19,7 @@ urlpatterns = [
     path('',index, name='home-page'),
     path('dashboard/', include('src.dashboard.urls')),
     path('category/', include('src.product.urls') ),
-    path('cart/', include('src.cart.urls') ),
+    path('order/', include('src.cart.urls') ),
 
 
 
@@ -28,7 +28,6 @@ urlpatterns = [
     path('about/',about, name='about-page'),
     path('faq/',faq, name='faq-page'),
     path('register/',register, name='register-page'),
-    path('login/',login, name='login-page'),
     path('login/',login, name='login-page'),
     path('forgot-password/',forgot_password, name='forgot-password'),
     path('my-account/',customer_dashboard, name='my-account'),

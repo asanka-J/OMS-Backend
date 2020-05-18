@@ -15,18 +15,30 @@ class Order(models.Model):
     complete = models.BooleanField(default=False)
    
     def __str__(self): 
-        return self.customer.name
+        return self.customer.first_name + str(self.id)
+    
+    @property
+    def get_cart_items(self):
+        orderitems = self.orderitem_set.all()
+        count = sum([item.quantity for item in orderitems])
+        return count   
+
+    @property
+    def get_cart_total(self):
+        orderitems = self.orderitem_set.all()
+        total = sum([item.quantity*float(item.product.sale_price) for item in orderitems])
+        return total 
 
 
 
 class OrderItem(models.Model):
     
-    Product = models.ForeignKey(Product,on_delete=models.SET_NULL , blank=True , null = True)
+    product = models.ForeignKey(Product,on_delete=models.SET_NULL , blank=True , null = True)
     order = models.ForeignKey(Order,on_delete=models.SET_NULL , blank=True , null = True)
     quantity = models.IntegerField(blank=True, null=True, default=0)
     
     def __str__(self): 
-        return self.Product.name
+        return  self.product.name + str(self.order.id)
 
     @property
     def get_total(self):
